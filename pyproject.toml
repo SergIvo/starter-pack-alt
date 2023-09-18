@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "resto-tg-bot"
+description = "Resto Telegram Bot"
+authors = ["ООО Девман <dvmn.org>"]
+version="0.1.0"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "4.2.1"
+httpx = "0.24.1"
+gunicorn = "20.1.0"
+whitenoise = "6.4.0"
+django-debug-toolbar = "4.1.0"
+pydantic = "1.10.8"
+psycopg2-binary = "2.9.6"
+pytest = {version = "7.3.*", extras = ["anyio"]}
+pytest-django = "4.5.2"
+anyio = "3.7.0"
+pytest-httpx = "0.22.0"
+django-non-dark-admin = "2.0.2"
+rollbar = "0.16.3"
+django-storages = "^1.13.2"
+boto3 = "^1.26.149"
+django-json-widget = "1.1.1"
+django-tg-bot-framework = {git = "https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/django_tg_bot_framework.git", rev = "e9f46c8ed991d1d1f095c4fe7e0cff1c33872a48"}
+tg-api = {git = "https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/tg_api.git", rev = "3ef2a61ca331c2619ded06ecf5a9fcdda48fed12"}
+s3-parse-url = "0.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+python_files = "tests.py test_*.py *_tests.py"
+cache_dir = "/pytest_cache_dir"
