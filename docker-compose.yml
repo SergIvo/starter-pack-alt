@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+
+  postgres:
+    image: postgres:14.8
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres_password
+      POSTGRES_DB: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./test_data:/test_data
+
+  django-resto:
+    container_name: django-resto
+    build:
+      context: ./django
+    environment:
+      WEBAPP_ROOT_URL: http://127.0.0.1:8000
+      POSTGRES_DSN: postgres://postgres_user:postgres_password@postgres:5432/postgres_db
+      DJ__SECRET_KEY: empty
+      DJ__DEBUG: 'true'
+      DJ__ALLOWED_HOSTS: '127.0.0.1, localhost, .ngrok-free.app'
+      DJ__CSRF_TRUSTED_ORIGINS: 'https://*.ngrok-free.app'
+      ENABLE_DEBUG_TOOLBAR: 'true'
+      ENABLE_MEDIA_FILES_SERVING: 'true'
+      TG_BOT_LOGGING_LEVEL: 'DEBUG'
+      DJANGO_TG_BOT_FRAMEWORK_LOGGING_LEVEL: 'DEBUG'
+      GUNICORN_CMD_ARGS: '--reload --workers 2'
+      TG__BOT_TOKEN: ${TG__BOT_TOKEN?error}
+      DJANGO_SUPERUSER_EMAIL: 'root@example.com'
+      DJANGO_SUPERUSER_USERNAME: 'root'
+      DJANGO_SUPERUSER_PASSWORD: 'dfpkdsmgnnb*34865h!3'
+    ports:
+      - 127.0.0.1:8000:80
+    volumes:
+      - ./media:/media/
+      - ./django/src:/opt/app/src/
+      - ./django/pyproject.toml:/opt/app/pyproject.toml
+      - ./django/poetry.lock:/opt/app/poetry.lock
+    depends_on:
+      - postgres
+
+#  py-linters:
+#    build:
+#      context: ./py-linters/
+#    volumes:
+#      - ./py-linters/pyproject.toml:/opt/linters/pyproject.toml
+#      - ./py-linters/poetry.lock:/opt/linters/poetry.lock
+#      # mount source code to check a code with linter running inside a container
+#      - ./django:/django
+#    command: 'echo Skipped'
+
+volumes:
+  postgres_data:

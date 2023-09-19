@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-configmap
+  namespace: dev-tender-stallman
+data:
+  DJ__ALLOWED_HOSTS: 'dev-tender-stallman.sirius-k8s.dvmn.org'
+  ROLLBAR__ENVIRONMENT: 'development'
+  DJ__CSRF_TRUSTED_ORIGINS: 'https://*.dvmn.org'
+  COMMIT_HASH: <COMMIT_HASH>
+
