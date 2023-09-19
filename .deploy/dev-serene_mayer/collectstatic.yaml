@@ -14,7 +14,7 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-        - image: cr.yandex/crpqn584542tjfc66eqj/django:<COMMIT_HASH>
+        - image: cr.yandex/crp56oc2ok40na75lc82/django:<COMMIT_HASH>
           imagePullPolicy: IfNotPresent
           name: django
           env:

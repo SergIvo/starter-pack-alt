@@ -12,9 +12,9 @@ build-django:
       # --cache=true -- enables cache with Yandex.Cloud Container Registry
       # --cache-copy-layers -- caches in repository not only `RUN` but `COPY` сommand too.
       - /kaniko/executor
-         --context "${CI_PROJECT_DIR}/django"
-         --dockerfile "${CI_PROJECT_DIR}/django/Dockerfile"
-         --destination "cr.yandex/crpqn584542tjfc66eqj/django:${CI_COMMIT_SHA}"
+         --context "${CI_PROJECT_DIR}/src"
+         --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+         --destination "cr.yandex/crp56oc2ok40na75lc82/django:${CI_COMMIT_SHA}"
          --use-new-run
          --cache=true
          --cache-copy-layers

@@ -10,12 +10,12 @@ services:
       POSTGRES_DB: postgres_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./test_data:/test_data
 
-  django-resto:
-    container_name: django-resto
+  django:
+    container_name: django
     build:
-      context: ./django
+      context: ./
+      target: starter_pack_base
     environment:
       WEBAPP_ROOT_URL: http://127.0.0.1:8000
       POSTGRES_DSN: postgres://postgres_user:postgres_password@postgres:5432/postgres_db
@@ -30,15 +30,16 @@ services:
       GUNICORN_CMD_ARGS: '--reload --workers 2'
       TG__BOT_TOKEN: ${TG__BOT_TOKEN?error}
       DJANGO_SUPERUSER_EMAIL: 'root@example.com'
-      DJANGO_SUPERUSER_USERNAME: 'root'
+      DJANGO_SUPERUSER_LAST_NAME: 'Админский'
+      DJANGO_SUPERUSER_FIRST_NAME: 'Пользователь'
       DJANGO_SUPERUSER_PASSWORD: 'dfpkdsmgnnb*34865h!3'
     ports:
       - 127.0.0.1:8000:80
     volumes:
       - ./media:/media/
-      - ./django/src:/opt/app/src/
-      - ./django/pyproject.toml:/opt/app/pyproject.toml
-      - ./django/poetry.lock:/opt/app/poetry.lock
+      - ./src:/opt/app/src/
+      - ./pyproject.toml:/opt/app/pyproject.toml
+      - ./poetry.lock:/opt/app/poetry.lock
     depends_on:
       - postgres
 

@@ -1,4 +1,4 @@
-FROM docker.io/python:3.11.3
+FROM docker.io/python:3.11.3 as starter_pack_base
 
 ARG BASE_DIR=/opt/app
 
@@ -33,6 +33,8 @@ WORKDIR ${BASE_DIR}/src
 ENV PYTHONPATH "$PYTHONPATH:${BASE_DIR}/src/"
 
 COPY ./src ./
+COPY ./.scripts/entrypoint.sh ./
+RUN chmod +x entrypoint.sh
 
 ENV \
     DJANGO_SETTINGS_MODULE=project.settings \
