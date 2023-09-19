@@ -1,4 +1,4 @@
-build-django:
+ -build-django:
    stage: build
    image:
       # Используем kaniko для создания образов внутри контейнера.
@@ -12,7 +12,7 @@ build-django:
       # --cache=true -- enables cache with Yandex.Cloud Container Registry
       # --cache-copy-layers -- caches in repository not only `RUN` but `COPY` сommand too.
       - /kaniko/executor
-         --context "${CI_PROJECT_DIR}/src"
+         --context "${CI_PROJECT_DIR}"
          --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
          --destination "cr.yandex/crp3h04khu638hf0ob6l/django:${CI_COMMIT_SHA}"
          --use-new-run
