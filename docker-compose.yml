@@ -40,6 +40,7 @@ services:
       - ./src:/opt/app/src/
       - ./pyproject.toml:/opt/app/pyproject.toml
       - ./poetry.lock:/opt/app/poetry.lock
+      - ./.scripts/entrypoint.sh:/opt/app/entrypoint.sh
     depends_on:
       - postgres
 
