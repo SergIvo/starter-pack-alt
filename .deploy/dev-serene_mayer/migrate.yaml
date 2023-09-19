@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: django-migrate
-  namespace: dev-tender-stallman
+  namespace: dev-serene-mayer
   labels:
     app.kubernetes.io/name: django
 spec:

@@ -3,7 +3,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: django-collectstatic
-  namespace: dev-tender-stallman
+  namespace: dev-serene-mayer
   labels:
     app.kubernetes.io/name: django
 spec:
