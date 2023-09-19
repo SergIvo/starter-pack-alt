@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: django-deployment
-  namespace: dev-serene-mayer
+  namespace: dev-naughty-swanson
   labels:
     app.kubernetes.io/name: django
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: django-container
-        image: cr.yandex/crp56oc2ok40na75lc82/django:<COMMIT_HASH>
+        image: cr.yandex/crp3h04khu638hf0ob6l/django:<COMMIT_HASH>
         imagePullPolicy: IfNotPresent
         envFrom:
           - configMapRef:
@@ -96,7 +96,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: django-service
-  namespace: dev-serene-mayer
+  namespace: dev-naughty-swanson
 spec:
   type: NodePort
   selector:
@@ -105,4 +105,4 @@ spec:
     - port: 80
       protocol: TCP
       targetPort: 80
-      nodePort: 30242
+      nodePort: 30241

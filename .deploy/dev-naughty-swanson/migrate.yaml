@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: django-migrate
-  namespace: dev-serene-mayer
+  namespace: dev-naughty-swanson
   labels:
     app.kubernetes.io/name: django
 spec:
@@ -39,7 +39,7 @@ spec:
                 name: tg-bot
                 key: token
                 optional: false
-        image: cr.yandex/crp56oc2ok40na75lc82/django:<COMMIT_HASH>
+        image: cr.yandex/crp3h04khu638hf0ob6l/django:<COMMIT_HASH>
         command:
           - python3
           - manage.py

@@ -14,7 +14,7 @@ build-django:
       - /kaniko/executor
          --context "${CI_PROJECT_DIR}/src"
          --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
-         --destination "cr.yandex/crp56oc2ok40na75lc82/django:${CI_COMMIT_SHA}"
+         --destination "cr.yandex/crp3h04khu638hf0ob6l/django:${CI_COMMIT_SHA}"
          --use-new-run
          --cache=true
          --cache-copy-layers

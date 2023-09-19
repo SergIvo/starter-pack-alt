@@ -5,7 +5,7 @@
 2. [Обновление уже развернутого ПО](#обновление-уже-развернутого-по)
    1. [Обновить ПО до текущего коммита](#обновить-по-до-текущего-коммита)
    2. [Обновить ПО из другой ветки](#обновить-по-из-другой-ветки)
-3. [Первичный деплой в окружение dev-serene-mayer](#первичный-деплой-в-окружение-dev-serene-mayer)
+3. [Первичный деплой в окружение dev-naughty-swanson](#первичный-деплой-в-окружение-dev-naughty-swanson)
    1. [Создание недостающих секретов](#создание-недостающих-секретов)
    2. [Добавление суперюзера](#добавление-суперюзера)
 
@@ -32,14 +32,14 @@ git log -1
 Если нашли нужную сборку, то запустите деплойный скрипт:
 
 ```shell
-bash envs/dev-serene-mayer/deploy.sh
+bash envs/dev-naughty-swanson/deploy.sh
 # Пример вывода при успешном деплое:
 # …
 # Project deployed successfully
 # Commit hash of deployed version:: c900c9221d62e24ef227e2c427db5caaed81d051
 ```
 
-Админ-панель будет доступна по адресу [https://dev-serene-mayer.sirius-k8s.dvmn.org/admin/](https://dev-serene-mayer.sirius-k8s.dvmn.org/admin/). Логин и пароль суперпользователя: `root`, `dfpkdsmgnnb*34865h!3`.
+Админ-панель будет доступна по адресу [https://dev-naughty-swanson.sirius-k8s.dvmn.org/admin/](https://dev-naughty-swanson.sirius-k8s.dvmn.org/admin/). Логин и пароль суперпользователя: `root`, `dfpkdsmgnnb*34865h!3`.
 
 Если суперюзера в БД нет, воспользуйтесь [инструкцией](#добавление-суперюзера) по созданию нового суперюзера.
 
@@ -73,7 +73,7 @@ git log -1
 Если нашли нужную сборку, то запустите деплойный скрипт:
 
 ```shell
-bash envs/dev-serene-mayer/deploy.sh
+bash envs/dev-naughty-swanson/deploy.sh
 # Пример вывода при успешном деплое:
 # …
 # Project deployed successfully
@@ -88,11 +88,11 @@ git stash pop
 
 Все незакоммиченные изменения будут возвращены, и вы снова окажетесь в состоянии, в котором были до переключения на ветку main.
 
-## Первичный деплой в окружение dev-serene-mayer
+## Первичный деплой в окружение dev-naughty-swanson
 
 Установите и настройте себе `kubectl` локально прежде, чем двигаться дальше по инструкциям.
 
-В облаке уже должны быть выделены ресурсы. [dev-serene-mayer](https://sirius-env-registry.website.yandexcloud.net/dev-serene-mayer.html).
+В облаке уже должны быть выделены ресурсы. [dev-naughty-swanson](https://sirius-env-registry.website.yandexcloud.net/dev-naughty-swanson.html).
 
 ### Создание недостающих секретов
 
@@ -103,7 +103,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: django
-  namespace: dev-serene-mayer
+  namespace: dev-naughty-swanson
 stringData:
   debug: "false"
   secret_key: "your-secret-key"  # Замените значение на своё
@@ -125,7 +125,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: tg-bot
-  namespace: dev-serene-mayer
+  namespace: dev-naughty-swanson
 stringData:
   bot_username: "your-bot-username"  # Замените значение на своё
   token: "your-bot-token"  # Замените значение на своё
@@ -173,11 +173,11 @@ kubectl exec -it django-deployment-5bf4545594-sl5c4 bash
 Запустить сценарий развертывания:
 
 ```shell
-bash envs/dev-serene-mayer/deploy.sh
+bash envs/dev-naughty-swanson/deploy.sh
 # Пример вывода при успешном деплое:
 # …
 # Project deployed successfully
 # Commit hash of deployed version:: c900c9221d62e24ef227e2c427db5caaed81d051
 ```
 
-Админ-панель будет доступна по адресу [https://dev-serene-mayer.sirius-k8s.dvmn.org/admin](https://dev-serene-mayer.sirius-k8s.dvmn.org/admin). Для авторизации введите имя и пароль созданного суперюзера.
+Админ-панель будет доступна по адресу [https://dev-naughty-swanson.sirius-k8s.dvmn.org/admin](https://dev-naughty-swanson.sirius-k8s.dvmn.org/admin). Для авторизации введите имя и пароль созданного суперюзера.

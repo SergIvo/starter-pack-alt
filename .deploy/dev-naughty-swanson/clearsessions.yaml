@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: clear-sessions
-  namespace: dev-serene-mayer
+  namespace: dev-naughty-swanson
   labels:
     app.kubernetes.io/name: django
 spec:
@@ -20,7 +20,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: django
-            image: cr.yandex/crp56oc2ok40na75lc82/django:<COMMIT_HASH>
+            image: cr.yandex/crp3h04khu638hf0ob6l/django:<COMMIT_HASH>
             imagePullPolicy: IfNotPresent
             env:
               - name: WEBAPP_ROOT_URL
