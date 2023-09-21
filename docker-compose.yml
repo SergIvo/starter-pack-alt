@@ -44,15 +44,15 @@ services:
     depends_on:
       - postgres
 
-#  py-linters:
-#    build:
-#      context: ./py-linters/
-#    volumes:
-#      - ./py-linters/pyproject.toml:/opt/linters/pyproject.toml
-#      - ./py-linters/poetry.lock:/opt/linters/poetry.lock
-#      # mount source code to check a code with linter running inside a container
-#      - ./django:/django
-#    command: 'echo Skipped'
+  linters:
+    build:
+      context: ./.linters/
+    volumes:
+      - ./.linters/pyproject.toml:/opt/linters/pyproject.toml
+      - ./.linters/poetry.lock:/opt/linters/poetry.lock
+      # mount source code to check a code with linter running inside a container
+      - ./src:/django
+    command: 'echo Skipped'
 
 volumes:
   postgres_data:
