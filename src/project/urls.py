@@ -34,5 +34,5 @@ if settings.ENV.ENABLE_MEDIA_FILES_SERVING:
 
 if settings.ENV.DJ.DEBUG:
     urlpatterns += [
-    path('__debug__/', include('debug_toolbar.urls')),
+        path('__debug__/', include('debug_toolbar.urls')),
     ]

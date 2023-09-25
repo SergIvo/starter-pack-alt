@@ -1,4 +1,4 @@
-FROM docker.io/python:3.11.3-alpine
+FROM docker.io/python:3.11.3
 
 ARG BASE_DIR=/opt/linters
 
@@ -17,7 +17,8 @@ ENV \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100
 
-RUN apk add --no-cache poetry
+RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.5.1 python3 -
+ENV PATH="/root/.local/bin:${PATH}"
 
 WORKDIR ${BASE_DIR}
 COPY ./pyproject.toml ./poetry.lock ./

@@ -5,9 +5,7 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-    """
-    Менеджер авторизации для пользователей
-    """
+    """Менеджер авторизации для пользователей."""
 
     @classmethod
     def normalize_username(cls, username):
@@ -29,20 +27,14 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, last_name, first_name, password=None, **extra_fields):
-        """
-        Создает и возвращает `User` с адресом электронной почты,
-        Ф.И. пользователя и паролем.
-        """
+        """Создает и возвращает `User` с адресом электронной почты, Ф.И. пользователя и паролем."""
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
 
         return self._create_user(email, last_name, first_name, password, **extra_fields)
 
     def create_superuser(self, email, last_name, first_name, password, **extra_fields):
-        """
-        Создает и возвращает пользователя с правами
-        суперпользователя (администратора).
-        """
+        """Создает и возвращает пользователя с правами суперпользователя (администратора)."""
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
 
@@ -56,11 +48,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    """
-    Пользователь системы
-    """
+    """Пользователь системы."""
 
-    id = models.AutoField('Идентификатор', primary_key=True)
     email = models.EmailField('Электронная почта', max_length=255, null=False, blank=False, unique=True)
     is_staff = models.BooleanField('Признак отношения к персоналу', default=False)
     is_active = models.BooleanField('Признак активности', default=True)
@@ -78,7 +67,5 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        """
-        Возвращает строковое представление пользователя.
-        """
+        """Возвращает строковое представление пользователя."""
         return f'{self.first_name} {self.last_name}'

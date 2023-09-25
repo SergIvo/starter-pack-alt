@@ -40,7 +40,6 @@ services:
       - ./src:/opt/app/src/
       - ./pyproject.toml:/opt/app/pyproject.toml
       - ./poetry.lock:/opt/app/poetry.lock
-      - ./.scripts/entrypoint.sh:/opt/app/entrypoint.sh
     depends_on:
       - postgres
 
@@ -51,7 +50,7 @@ services:
       - ./.linters/pyproject.toml:/opt/linters/pyproject.toml
       - ./.linters/poetry.lock:/opt/linters/poetry.lock
       # mount source code to check a code with linter running inside a container
-      - ./src:/django
+      - ./src:/src
     command: 'echo Skipped'
 
 volumes:

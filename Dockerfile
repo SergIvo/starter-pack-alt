@@ -33,8 +33,6 @@ WORKDIR ${BASE_DIR}/src
 ENV PYTHONPATH "$PYTHONPATH:${BASE_DIR}/src/"
 
 COPY ./src ./
-COPY ./.scripts/entrypoint.sh ${BASE_DIR}/entrypoint.sh
-RUN chmod ugo+rwx ${BASE_DIR}/entrypoint.sh
 
 ENV \
     DJANGO_SETTINGS_MODULE=project.settings \
@@ -50,4 +48,4 @@ RUN \
     TG__BOT_TOKEN=999 \
     ./manage.py collectstatic --noinput
 
-CMD /bin/sh /opt/app/entrypoint.sh
+CMD gunicorn project.wsgi:application --access-logfile -

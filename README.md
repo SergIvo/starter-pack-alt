@@ -16,6 +16,7 @@
 3. [Как развернуть dev-окружение](#как-развернуть-dev-окружение)
 
 <a name="local-setup"></a>
+
 ## Как развернуть local-окружение
 
 Для запуска ПО вам понадобятся консольный Git, Docker и Docker Compose. Инструкции по их установке ищите на официальных сайтах:
@@ -23,18 +24,69 @@
 - [Install Docker Desktop](https://www.docker.com/get-started/)
 - [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-Склонируйте репозиторий.
+> Для тех, кто использует Windows необходимы также программы **git** и **git bash**. В git bash надо добавить ещё команду make:
+>
+> - Go to [ezwinports](https://sourceforge.net/projects/ezwinports/files/)
+> - Download make-4.2.1-without-guile-w32-bin.zip (get the version without guile)
+> - Extract zip
+> - Copy the contents to C:\ProgramFiles\Git\mingw64\ merging the folders, but do NOT overwrite/replace any exisiting files.
+>
+> Все дальнейшие команды запускать из-под **git bash**
 
-
-В репозитории используются хуки pre-commit, чтобы автоматически запускать линтеры и автотесты. Перед началом разработки установите [pre-commit package manager](https://pre-commit.com/).
-
-В корне репозитория запустите команду для настройки хуков:
+Помимо стандартных команд Docker Compose, локальным окружением можно управлять с помощью команд Makefile:
 
 ```shell
-$ pre-commit install
+$ # Скачивание и сборка образов, установка миграций, создание суперпользователя (root@example.com/dfpkdsmgnnb*34865h!3) и запуск проекта
+$ make first_start
 ```
 
-В последующем при коммите автоматически будут запускаться линтеры и автотесты. Есть линтеры будет недовольны, или автотесты сломаются, то коммит прервётся с ошибкой.
+```shell
+$ # Скачивание и сборка образов
+$ make build
+```
+```shell
+$ # Запуск проекта (после сборки)
+$ make run
+```
+```shell
+$ # Остановка проекта (после запуска)
+$ make stop
+```
+```shell
+$ # Запуск проверки проекта линтерами
+$ make lint
+```
+```shell
+$ # Запуск проверки открытого в редакторе файла линтерами
+$ make lint_file
+```
+```shell
+$ # Запуск тестов
+$ make pytest
+```
+```shell
+$ # Создать миграции
+$ make makemigrations
+```
+```shell
+$ # Применить новые миграции 
+$ make migrate
+```
+
+## Работа с кодом с использованием docker
+Склонируйте репозиторий.
+
+>
+> В репозитории используются хуки pre-commit, чтобы автоматически запускать линтеры и автотесты. Перед началом разработки установите [pre-commit package manager](https://pre-commit.com/).
+>
+> В корне репозитория запустите команду для настройки хуков:
+>
+> ```shell
+> $ pre-commit install
+> ```
+>
+> В последующем при коммите автоматически будут запускаться линтеры и автотесты. Есть линтеры будет недовольны, или автотесты сломаются, то коммит прервётся с ошибкой.
+>
 
 Сначала скачайте и соберите докер-образы с помощью Docker Сompose:
 
@@ -47,7 +99,7 @@ $ docker compose build
 
 ```sh
 # file .env:
-TG_BOT_TOKEN="1616161616:AAF01OAAF01OAAF01OAAF01OAAF01O"
+TG__BOT_TOKEN="1616161616:AAF01OAAF01OAAF01OAAF01OAAF01O"
 ```
 
 Запустите докер-контейнеры и не выключайте:
@@ -56,7 +108,7 @@ TG_BOT_TOKEN="1616161616:AAF01OAAF01OAAF01OAAF01OAAF01O"
 $ docker compose up
 ```
 
-Схема разработческой БД наверняка устарела, поэтому накатите сразу свежие миграции:
+:
 
 ```shell
 $ docker compose run --rm django ./manage.py migrate
@@ -64,8 +116,8 @@ $ docker compose run --rm django ./manage.py migrate
 
 Сайт доступен по адресу [127.0.0.1:8000](http://127.0.0.1:8000). Вход в админку находится по адресу [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/). Вы можете создать суперпользователя командой:
 
-```shell
-docker compose run --rm django-resto createsuperuser
+``` shell
+docker compose run --rm django createsuperuser --no-input
 ```
 После выполнения команды в системе создастся суперпользователь с реквизитами:
 - `root`, пароль `dfpkdsmgnnb*34865h!3`
@@ -279,4 +331,4 @@ $ docker compose run --rm django pytest -s test_tools_for_testing.py::test_httpx
 
 ## Как развернуть dev-окружение
 
-Инструкции по развертыванию и обновлению ПО лежат в отдельном файле README. [Инструкции к окружению `dev-adoring-archimedes`](envs/dev-adoring-archimedes/README.md).
+Инструкции по развертыванию и обновлению ПО лежат в отдельном файле README. [Инструкции к окружению `.deploy/dev-naughty-swanson`](.deploy/dev-naughty-swanson/README.md).
