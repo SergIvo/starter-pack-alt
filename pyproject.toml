@@ -22,8 +22,8 @@ rollbar = "0.16.3"
 django-storages = "^1.13.2"
 boto3 = "^1.26.149"
 django-json-widget = "1.1.1"
-tg-api = {git = "https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/tg_api.git", rev = "3ef2a61ca331c2619ded06ecf5a9fcdda48fed12"}
 s3-parse-url = "0.3.3"
+tg-api = "1.1.0"
 
 [build-system]
 requires = ["poetry-core"]
