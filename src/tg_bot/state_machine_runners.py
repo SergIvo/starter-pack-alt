@@ -8,11 +8,10 @@ import rollbar
 from django.db import transaction
 from django.conf import settings
 
-from tg_api import Update, SyncTgClient, Message
-from tg_api.tg_types import CallbackQuery
+from tg_api import Update, SyncTgClient
 from django_tg_bot_framework import UnknownStateClassLocatorError, Router, BaseState, StateMachine, set_contextvar
 
-from tg_bot.models import Conversation, language_code
+from tg_bot.models import Conversation
 
 logger = logging.getLogger('tg_bot')
 
@@ -129,18 +128,6 @@ def process_tg_update(update: Update, *, router: Router, conversation_var: Conte
         state_machine = StateMachine(
             current_state=restored_state or router.locate('/'),
         )
-
-        forced_language_code = conversation.forced_language_code
-        match update.message, update.callback_query:
-            case _ if forced_language_code:
-                code = forced_language_code
-            case Message(), None if update.message.from_:
-                code = update.message.from_.language_code
-            case None, CallbackQuery() if update.callback_query.from_:
-                code = update.callback_query.from_.language_code
-            case _:
-                code = 'en'
-        language_code.set(code)
 
         with set_contextvar(conversation_var, conversation):
             with SyncTgClient.setup(token=settings.ENV.TG.BOT_TOKEN):

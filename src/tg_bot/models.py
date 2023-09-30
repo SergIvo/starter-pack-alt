@@ -1,5 +1,4 @@
 from contextvars import ContextVar
-from typing import Optional
 
 from django.db import models
 from django.utils import timezone
@@ -10,7 +9,6 @@ from django_tg_bot_framework.models import (
 
 # Will be initialized with current conversation object by state machine runner before states methods run.
 conversation_var: ContextVar['Conversation'] = ContextVar('conversation_var')
-language_code: ContextVar[Optional[str]] = ContextVar('language_code', default=None)
 
 
 class Conversation(BaseStateMachineDump, TgUserProfileMixin):
