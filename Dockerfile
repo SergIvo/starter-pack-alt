@@ -30,7 +30,7 @@ RUN mkdir -p ~/.postgresql && \
     chmod 0600 ~/.postgresql/root.crt
 
 WORKDIR ${BASE_DIR}/src
-ENV PYTHONPATH "$PYTHONPATH:${BASE_DIR}/src/"
+ENV PYTHONPATH "$PYTHONPATH:${BASE_DIR}/src/:${BASE_DIR}/src/.contrib-candidates"
 
 COPY ./src ./
 

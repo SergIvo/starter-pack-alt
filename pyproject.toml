@@ -22,7 +22,6 @@ rollbar = "0.16.3"
 django-storages = "^1.13.2"
 boto3 = "^1.26.149"
 django-json-widget = "1.1.1"
-django-tg-bot-framework = {git = "https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/django_tg_bot_framework.git", rev = "e9f46c8ed991d1d1f095c4fe7e0cff1c33872a48"}
 tg-api = {git = "https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/tg_api.git", rev = "3ef2a61ca331c2619ded06ecf5a9fcdda48fed12"}
 s3-parse-url = "0.3.3"
 

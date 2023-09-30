@@ -53,9 +53,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_json_widget',
 
-    # custom shared apps
-    'django_tg_bot_framework.apps.DjangoTgBotFrameworkConfig',
-
     # custom apps
     'user_access',
     'tg_bot.apps.TgBotConfig',
