@@ -3,7 +3,7 @@ import httpx
 import pytest
 from pytest_httpx import HTTPXMock
 
-from django.contrib.auth.models import User
+from auth.models import User
 
 
 @pytest.mark.anyio()
