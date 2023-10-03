@@ -32,6 +32,32 @@
 > - Copy the contents to C:\ProgramFiles\Git\mingw64\ merging the folders, but do NOT overwrite/replace any exisiting files.
 >
 > Все дальнейшие команды запускать из-под **git bash**
+> 
+### Подготовка файла .env
+
+Для локального развертывания приложения необходимо в корне проекта создать файл `.env` со следующими переменными:
+
+```shell
+# Обязательные переменные
+DJ__SECRET_KEY=your_secret_key
+DJ__DEBUG=true
+DJ__ALLOWED_HOSTS='127.0.0.1, localhost, .ngrok-free.app'
+DJ__CSRF_TRUSTED_ORIGINS=https://*.ngrok-free.app
+POSTGRES_DSN=postgresql://username:password@localhost:5432/resto
+WEBAPP_ROOT_URL=http://127.0.0.1:8000
+TG__WEBHOOK_TOKEN=your_webhook_token
+TG__BOT_TOKEN=your_tg_bot_token
+PUBLIC_URL=your_ngrok_web_url
+S3_DSN=s3_dsn_format
+
+# (необязательно) реквизиты для в создания суперпользователя без пользовательского ввода
+DJANGO_SUPERUSER_EMAIL='root@example.com'
+DJANGO_SUPERUSER_USERNAME='root'
+DJANGO_SUPERUSER_PASSWORD='dfpkdsmgnnb*34865h!3'
+```
+
+
+### Команды для быстрого запуска с помощью make
 
 Помимо стандартных команд Docker Compose, локальным окружением можно управлять с помощью команд Makefile:
 
@@ -108,7 +134,7 @@ TG__BOT_TOKEN="1616161616:AAF01OAAF01OAAF01OAAF01OAAF01O"
 $ docker compose up
 ```
 
-:
+Накатить миграции можно с помощью команды:
 
 ```shell
 $ docker compose run --rm django ./manage.py migrate
@@ -117,10 +143,10 @@ $ docker compose run --rm django ./manage.py migrate
 Сайт доступен по адресу [127.0.0.1:8000](http://127.0.0.1:8000). Вход в админку находится по адресу [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/). Вы можете создать суперпользователя командой:
 
 ``` shell
-docker compose run --rm django createsuperuser --no-input
+docker compose run --rm django python manage.py createsuperuser --no-input
 ```
 После выполнения команды в системе создастся суперпользователь с реквизитами:
-- `root`, пароль `dfpkdsmgnnb*34865h!3`
+- `root@example.com`, пароль `dfpkdsmgnnb*34865h!3`
 
 Первый запуск автотестов Django может занимать много времени из-за создания тестовой БД. А так как автотесты сами запускаются при коммите, то это может привести к неожиданному "зависанию" git. Проблема случается только при первом запуске. Чтобы не споткнуться на таком лучше сразу запустите автотесты в первый раз, чтобы создать тестовую БД:
 
