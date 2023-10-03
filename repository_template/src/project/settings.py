@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'django_json_widget',
 
     # custom apps
-    'user_access',
+    'project_auth',
     'tg_bot.apps.TgBotConfig',
 
     'storages',
@@ -123,7 +123,8 @@ DATABASES = {
 }
 
 # Кастомная модель пользователя
-AUTH_USER_MODEL = 'user_access.User'
+AUTH_USER_MODEL = 'project_auth.User'
+AUTHENTICATION_BACKENDS = ['utils.custom_authentication.CustomBackend', ]
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

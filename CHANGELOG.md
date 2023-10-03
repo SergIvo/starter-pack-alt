@@ -1,0 +1,4 @@
+## Update 2023-10-03
+- Шаблон проекта переехал в каталог `repository_template` - [#9](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/9)
+- Изменена документация - [#10](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/10), [#11](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/11), [#12](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/12), [#13](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/13), [#14](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/14), [#15](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/15)
+- 
