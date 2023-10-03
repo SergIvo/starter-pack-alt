@@ -1,8 +1,8 @@
 from django.apps import AppConfig
 
 
-class UserAccessConfig(AppConfig):
+class AuthConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'project_auth'
+    name = 'auth'
     label = 'project_auth'
     verbose_name = 'Аутентификация'
