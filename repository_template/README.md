@@ -144,8 +144,8 @@ $ # Замените `https://example.ngrok-free.app` на полученный 
 $ PUBLIC_URL="https://example.ngrok-free.app"
 $ # Замените `1613441681:example` на токен вашего телеграм бота
 $ TG__BOT_TOKEN="1613441681:example"
-$ curl https://api.telegram.org/bot${TG_BOT_TOKEN}/setWebhook
-$ curl -F "url=${PUBLIC_URL}/webhook/" https://api.telegram.org/bot${TG_BOT_TOKEN}/setWebhook
+$ curl https://api.telegram.org/bot${TG__BOT_TOKEN}/setWebhook
+$ curl -F "url=${PUBLIC_URL}/webhook/" https://api.telegram.org/bot${TG__BOT_TOKEN}/setWebhook
 {"ok":true,"result":true,"description":"Webhook was set"}
 ```
 
