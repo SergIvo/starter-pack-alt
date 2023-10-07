@@ -16,6 +16,6 @@ repos:
 
       - id: test-django
         name: test-django
-        entry: docker compose run -T --rm django pytest
+        entry: docker compose run -T --rm django pytest ./ .contrib-candidates/
         language: system
         pass_filenames: no
