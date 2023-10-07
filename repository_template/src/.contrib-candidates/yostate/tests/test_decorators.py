@@ -1,11 +1,11 @@
 from typing import Any, Type
 
-from django_tg_bot_framework.routes import Router, StateDecoratorType
-from django_tg_bot_framework.states import BaseState
-from django_tg_bot_framework.state_machine import StateMachine
+from ..router import Router, StateDecoratorType, Locator
+from ..states import BaseState
+from ..sync_crawler import Crawler
 
 
-def test_simple_logging_decorator():
+def test_simple_logging_sync_decorator():
     process_calls_log = []
 
     def log_process_calls(state_class: Type[BaseState]) -> StateDecoratorType:
@@ -25,11 +25,11 @@ def test_simple_logging_decorator():
     class StartState(BaseState):
         pass
 
-    state_machine = StateMachine(current_state=router.locate('/'))
-    state_machine.reenter_state()
-    state_machine.process('first_event')
-    state_machine.switch_to(router.locate('/start/'))
-    state_machine.process('second_event')
+    crawler = Crawler(router=router)
+    crawler.restore(Locator('/'))
+    crawler.process('first_event')
+    crawler.switch_to(Locator('/start/'))
+    crawler.process('second_event')
 
     assert process_calls_log == [
         'first_event',

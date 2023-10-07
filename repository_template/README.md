@@ -103,7 +103,7 @@ docker compose run --rm django python manage.py createsuperuser --no-input
 Первый запуск автотестов Django может занимать много времени из-за создания тестовой БД. А так как автотесты сами запускаются при коммите, то это может привести к неожиданному "зависанию" git. Проблема случается только при первом запуске. Чтобы не споткнуться на таком лучше сразу запустите автотесты в первый раз, чтобы создать тестовую БД:
 
 ```shell
-$ docker compose run --rm django pytest
+$ docker compose run --rm django pytest ./ .contrib-candidates/
 ```
 
 Для работы телеграм-бота надо зарегистрировать вебхук на серверах Telegram, а для этого понадобится публичный адрес.
@@ -317,7 +317,7 @@ $ sudo chown -R $(id -u):$(id -g) ./test_data
 В проекте используются вперемешку и стандартные юнит-тесты Django, и автотесты [pytest](https://docs.pytest.org/). Можно разом запустить их все вместе:
 
 ```shell
-$ docker compose run --rm django pytest
+$ docker compose run --rm django pytest ./ .contrib-candidates/
 [+] Building 0.0s (0/0)
 [+] Creating 1/0
  ✔ Container postgres-1                                            0.0s

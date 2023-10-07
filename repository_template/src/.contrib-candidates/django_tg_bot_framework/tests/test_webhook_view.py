@@ -1,5 +1,6 @@
+from contextlib import contextmanager
 from contextvars import ContextVar
-from typing import Callable
+from typing import Callable, Any, Generator
 from unittest.mock import MagicMock
 
 import pytest
@@ -10,8 +11,16 @@ from django.urls import path
 
 from tg_api import Update
 
-from django_tg_bot_framework.views import process_webhook_call
-from django_tg_bot_framework.contextvars_tools import set_contextvar
+from ..views import process_webhook_call
+
+
+@contextmanager
+def set_contextvar(contextvar: ContextVar[Any], value: Any) -> Generator[None, None, None]:
+    var_token = contextvar.set(value)
+    try:
+        yield
+    finally:
+        contextvar.reset(var_token)
 
 
 process_update_callable: ContextVar[Callable[[...], ...]] = ContextVar('process_update_callable')
