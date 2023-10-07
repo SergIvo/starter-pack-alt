@@ -1,15 +1,25 @@
-from django_tg_bot_framework import BaseState, Router, InteractiveState
-from tg_api import (
-    Message,
+from tg_api import SendMessageRequest
+from yostate import Router, Locator
+
+from django_tg_bot_framework import (
+    PrivateChatStateMachine,
+    PrivateChatState,
+    PrivateChatMessageReceived,
 )
 
+from .models import Conversation
 from .decorators import redirect_menu_commands
 
 router = Router(decorators=[redirect_menu_commands])
 
+state_machine = PrivateChatStateMachine(
+    router=router,
+    session_model=Conversation,
+)
+
 
 @router.register('/')
-class FirstUserMessageState(InteractiveState):
+class FirstUserMessageState(PrivateChatState):
     """Состояние используется для обработки самого первого сообщения пользователя боту.
 
     Текст стартового сообщения от пользователя игнорируется, а бот переключается в
@@ -19,24 +29,38 @@ class FirstUserMessageState(InteractiveState):
     состояние с приветственным сообщением. Это нужно только для обработки первого сообщения от пользователя.
     """
 
-    def react_on_message(self, message: Message) -> BaseState | None:
+    def process_message_received(self, message: PrivateChatMessageReceived) -> Locator | None:
         # Ignore any user input, redirect to welcome message
-        return router.locate('/welcome/')
+        return Locator('/welcome/')
 
 
 @router.register('/welcome/')
-class WelcomeState(InteractiveState):
-    def enter_state(self) -> BaseState | None:
-        # TODO send welcome message to user with buttons
-        pass
+class WelcomeState(PrivateChatState):
+    def enter_state(self) -> Locator | None:
+        SendMessageRequest(
+            text='Welcome!',
+            chat_id=Conversation.current.tg_chat_id,
+        ).send()
 
-    def react_on_message(self, message: Message) -> BaseState | None:
-        # TODO send message on response to user text input, redirect to new state
-        pass
+    def process_message_received(self, message: PrivateChatMessageReceived) -> Locator | None:
+        SendMessageRequest(
+            text=f'Эхо: {message.text}',
+            chat_id=Conversation.current.tg_chat_id,
+        ).send()
+        return Locator('/welcome/')
 
-    def react_on_inline_keyboard(self, message: Message, pressed_button_payload: str) -> BaseState | None:
-        # TODO send message on response to user button, redirect to new state
-        pass
 
-# TODO add one more state class to demostrate redirect from WelcomeState
-# TODO add some parameters to new state class to demostrate state parametrization
+@router.register('/main-menu/')
+class MainMenuState(PrivateChatState):
+    def enter_state(self) -> Locator | None:
+        SendMessageRequest(
+            text='Main Menu',
+            chat_id=Conversation.current.tg_chat_id,
+        ).send()
+
+    def process_message_received(self, message: PrivateChatMessageReceived) -> Locator | None:
+        SendMessageRequest(
+            text=f'Эхо: {message.text}',
+            chat_id=Conversation.current.tg_chat_id,
+        ).send()
+        return Locator('/main-menu/')

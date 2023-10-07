@@ -314,7 +314,7 @@ $ sudo chown -R $(id -u):$(id -g) ./test_data
 В проекте используются вперемешку и стандартные юнит-тесты Django, и автотесты [pytest](https://docs.pytest.org/). Можно разом запустить их все вместе:
 
 ```shell
-$ docker compose run --rm django pytest
+$ docker compose run --rm django pytest ./ .contrib-candidates/
 [+] Building 0.0s (0/0)
 [+] Creating 1/0
  ✔ Container postgres-1                                            0.0s
