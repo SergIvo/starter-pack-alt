@@ -55,3 +55,27 @@ def test_unknown_state_class_locator():
     locator = Locator('/menu/', params={'message_id': 10})
     with pytest.raises(NotFoundStateClassLocatorError):
         router.create_state(locator)
+
+
+@pytest.mark.parametrize("state_class_locator,reason", [
+    ('without-leading-slash', 'Leading slash symbol'),
+    ('/without-trailing-slash', 'Trailing slash symbol'),
+    ('/with whitespace/', 'Whitespace symbols are found'),
+    ('/WithUpperCase/', 'Uppercase symbols are found'),
+    ('/without|prohibited|symbols/', 'Prohibited symbols are found'),
+    ('//', 'Check out STATE_CLASS_LOCATOR_REGEXP.'),
+])
+def test_validate_state_class_locator_on_registration(state_class_locator: str, reason: str):
+    router = Router()
+    with pytest.raises(ValueError, match=reason):
+        @router.register(state_class_locator)
+        class SomeState(BaseState):
+            pass
+
+
+def test_failute_on_state_class_registration_without_inheritance_from_base_state():
+    router = Router()
+    with pytest.raises(ValueError, match='BaseState'):
+        @router.register('/')
+        class A():
+            pass
