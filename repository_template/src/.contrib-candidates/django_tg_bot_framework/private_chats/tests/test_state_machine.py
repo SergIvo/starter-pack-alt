@@ -531,7 +531,7 @@ def test_process_callback_query():
     class RootState(PrivateChatState):
         pass
 
-    RootState.process_callback_queried = MagicMock(return_value=None)
+    RootState.process_callback_query = MagicMock(return_value=None)
 
     callback_query_update = Update.parse_obj({
         "update_id": 692509267,
@@ -577,7 +577,7 @@ def test_process_callback_query():
     with state_machine.restore_or_create_session_from_tg_update(callback_query_update) as session:
         session.switch_to(Locator('/'))
         session.process_tg_update(callback_query_update)
-        assert RootState.process_callback_queried.called
-        RootState.process_callback_queried.assert_called_with(
+        assert RootState.process_callback_query.called
+        RootState.process_callback_query.assert_called_with(
             PrivateChatCallbackQuery.from_tg_update(callback_query_update),
         )
