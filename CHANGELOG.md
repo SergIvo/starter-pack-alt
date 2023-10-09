@@ -14,7 +14,7 @@
 ### Update 2023-10-09
 
 
-- В Django Tg Bot Framework исправлен баг обработки событий `PrivateChatMessageEdited` и `PrivateChatCallbackQuery`
+- В Django Tg Bot Framework исправлен баг обработки событий `PrivateChatMessageEdited` и `PrivateChatCallbackQuery` - #35
 
 ### Update 2023-10-07
 
@@ -27,4 +27,4 @@
 - Изменена документация - [#10](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/10), [#11](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/11), [#12](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/12), [#13](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/13), [#14](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/14), [#15](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/15), [#32](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/32)
 - Вернули файл .pre-commit-config.yml - [#25](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/25)
 - Решена проблема с миграциями - [#30](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/30)
-- Исправлен модуль с тестом = [#24](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/24)
+- Исправлен модуль с тестом - [#24](https://gitlab.levelupdev.ru/dvmn-open-source-dev-tools/devman-tg-bot-starter-pack/-/issues/24)
