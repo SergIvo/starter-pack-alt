@@ -11,6 +11,11 @@
 Не в релизе
 ------------------------
 
+### Update 2023-10-09
+
+
+- В Django Tg Bot Framework исправлен баг обработки событий `PrivateChatMessageEdited` и `PrivateChatCallbackQuery`
+
 ### Update 2023-10-07
 
 - Код внешней библиотеки Django Tg Bot Framework скопирован в репозиторий Devman Tg Bot Starter Pack в каталог .contrib-candidates

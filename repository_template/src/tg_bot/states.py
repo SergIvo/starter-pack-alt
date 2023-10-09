@@ -1,10 +1,11 @@
-from tg_api import SendMessageRequest
+from tg_api import SendMessageRequest, InlineKeyboardMarkup, InlineKeyboardButton
 from yostate import Router, Locator
 
 from django_tg_bot_framework import (
     PrivateChatStateMachine,
     PrivateChatState,
     PrivateChatMessageReceived,
+    PrivateChatCallbackQuery,
 )
 
 from .models import Conversation
@@ -56,7 +57,22 @@ class MainMenuState(PrivateChatState):
         SendMessageRequest(
             text='Main Menu',
             chat_id=Conversation.current.tg_chat_id,
+            reply_markup=InlineKeyboardMarkup(
+                inline_keyboard=[
+                    [
+                        InlineKeyboardButton(
+                            text='Welcome message',
+                            callback_data='welcome',
+                        ),
+                    ],
+                ],
+            ),
         ).send()
+
+    def process_callback_query(self, callback_query: PrivateChatCallbackQuery) -> Locator | None:
+        match callback_query.data:
+            case 'welcome':
+                return Locator('/welcome/')
 
     def process_message_received(self, message: PrivateChatMessageReceived) -> Locator | None:
         SendMessageRequest(

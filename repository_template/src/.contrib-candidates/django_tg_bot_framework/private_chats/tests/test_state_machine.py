@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 from tg_api import Update
 from yostate import Router, Locator
@@ -10,6 +12,7 @@ from .. import (
     PrivateChatStateMachine,
     PrivateChatState,
     PrivateChatMessageReceived,
+    PrivateChatCallbackQuery,
 )
 
 
@@ -423,3 +426,111 @@ def test_raise_on_process_tg_update_with_wrong_tg_update_object(wrong_update_pay
     with state_machine.restore_session(tg_chat_id=DEFAULT_TG_CHAT_ID) as session:
         with pytest.raises(state_machine.IrrelevantTgUpdate):
             session.process_tg_update(wrong_update)
+
+
+@override_settings(ROLLBAR=None)
+@pytest.mark.django_db
+def test_process_message_received():
+    router = Router()
+    state_machine = PrivateChatStateMachine(
+        router=router,
+        session_model=SessionModel,
+    )
+
+    @router.register('/')
+    class RootState(PrivateChatState):
+        pass
+
+    RootState.process_message_received = MagicMock(return_value=None)
+
+    message_received_update = Update.parse_obj({
+        'update_id': 1,
+        'message': {
+            'message_id': 101,
+            'from': {
+                'id': DEFAULT_TG_USER_ID,
+                'is_bot': False,
+                'first_name': 'Иван Петров',
+                'username': DEFAULT_TG_USERNAME,
+            },
+            'date': 0,
+            'chat': {
+                'id': DEFAULT_TG_CHAT_ID,
+                'type': 'private',
+            },
+        },
+    })
+
+    with state_machine.restore_or_create_session_from_tg_update(message_received_update) as session:
+        session.switch_to(Locator('/'))
+        session.process_tg_update(message_received_update)
+        assert RootState.process_message_received.called
+        RootState.process_message_received.assert_called_with(
+            PrivateChatMessageReceived.from_tg_update(message_received_update),
+        )
+
+
+@override_settings(ROLLBAR=None)
+@pytest.mark.django_db
+def test_process_callback_query():
+    router = Router()
+    state_machine = PrivateChatStateMachine(
+        router=router,
+        session_model=SessionModel,
+    )
+
+    @router.register('/')
+    class RootState(PrivateChatState):
+        pass
+
+    RootState.process_callback_queried = MagicMock(return_value=None)
+
+    callback_query_update = Update.parse_obj({
+        "update_id": 692509267,
+        "callback_query": {
+            "id": "981801765129023398",
+            "from": {
+                "id": DEFAULT_TG_USER_ID,
+                "is_bot": False,
+                'first_name': 'Иван Петров',
+                "username": DEFAULT_TG_USERNAME,
+            },
+            "message": {
+                "message_id": 3327,
+                "from": {
+                    "id": 1613441681,
+                    "is_bot": True,
+                    "first_name": "Debug bot",
+                    "username": "debug_bot",
+                },
+                "chat": {
+                    "id": 228593536,
+                    "username": DEFAULT_TG_USERNAME,
+                    "type": "private",
+                },
+                "date": 1696874446,
+                "text": "Main Menu",
+                "reply_markup": {
+                    "inline_keyboard": [
+                        [
+                            {
+                                "text": "Welcome message",
+                                "callback_data": "welcome",
+                            },
+                        ],
+                    ],
+                },
+            },
+            "chat_instance": "-1534451349677707646",
+            "data": "welcome",
+        },
+    })
+
+    with state_machine.restore_or_create_session_from_tg_update(callback_query_update) as session:
+        session.switch_to(Locator('/'))
+        session.process_tg_update(callback_query_update)
+        assert RootState.process_callback_queried.called
+        RootState.process_callback_queried.assert_called_with(
+            PrivateChatCallbackQuery.from_tg_update(callback_query_update),
+        )
+

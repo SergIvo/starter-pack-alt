@@ -26,8 +26,6 @@ class PrivateChatMessage(tg_types.Message):
     работают подсказки в IDE, и меньше ругается линтер.
     """
 
-    update_id: int = Field(description='Field value is copied from original Tg Update object')
-
     # Fields with extra validation for private chats:
     from_: tg_types.User = Field(alias='from')
     chat: PrivateChat
@@ -63,6 +61,8 @@ class PrivateChatMessage(tg_types.Message):
 
 @final
 class PrivateChatMessageReceived(PrivateChatMessage):
+    update_id: int = Field(description='Field value is copied from original Tg Update object')
+
     @classmethod
     def from_tg_update(cls, update):
         payload = update.message.dict(by_alias=True) | {'update_id': update.update_id}
@@ -71,6 +71,8 @@ class PrivateChatMessageReceived(PrivateChatMessage):
 
 @final
 class PrivateChatMessageEdited(PrivateChatMessage):
+    update_id: int = Field(description='Field value is copied from original Tg Update object')
+
     @classmethod
     def from_tg_update(cls, update):
         payload = update.edited_message.dict(by_alias=True) | {'update_id': update.update_id}
