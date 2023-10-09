@@ -12,6 +12,7 @@ from .. import (
     PrivateChatStateMachine,
     PrivateChatState,
     PrivateChatMessageReceived,
+    PrivateChatMessageEdited,
     PrivateChatCallbackQuery,
 )
 
@@ -472,6 +473,53 @@ def test_process_message_received():
 
 @override_settings(ROLLBAR=None)
 @pytest.mark.django_db
+def test_process_message_edited():
+    router = Router()
+    state_machine = PrivateChatStateMachine(
+        router=router,
+        session_model=SessionModel,
+    )
+
+    @router.register('/')
+    class RootState(PrivateChatState):
+        pass
+
+    RootState.process_message_edited = MagicMock(return_value=None)
+
+    message_edited_update = Update.parse_obj({
+        "update_id": 692509276,
+        "edited_message": {
+            "message_id": 3338,
+            "from": {
+                "id": 228593536,
+                "is_bot": False,
+                'first_name': 'Иван Петров',
+                "username": DEFAULT_TG_USERNAME,
+                "language_code": "en",
+            },
+            "chat": {
+                "id": 228593536,
+                'first_name': 'Иван Петров',
+                "username": DEFAULT_TG_USERNAME,
+                "type": "private",
+            },
+            "date": 1696877512,
+            "edit_date": 1696877517,
+            "text": "Hello!",
+        },
+    })
+
+    with state_machine.restore_or_create_session_from_tg_update(message_edited_update) as session:
+        session.switch_to(Locator('/'))
+        session.process_tg_update(message_edited_update)
+        assert RootState.process_message_edited.called
+        RootState.process_message_edited.assert_called_with(
+            PrivateChatMessageEdited.from_tg_update(message_edited_update),
+        )
+
+
+@override_settings(ROLLBAR=None)
+@pytest.mark.django_db
 def test_process_callback_query():
     router = Router()
     state_machine = PrivateChatStateMachine(
@@ -533,4 +581,3 @@ def test_process_callback_query():
         RootState.process_callback_queried.assert_called_with(
             PrivateChatCallbackQuery.from_tg_update(callback_query_update),
         )
-
