@@ -214,5 +214,7 @@ LOGGING = {
             'handlers': ['console'],
             'level': ENV.DJANGO_TG_BOT_FRAMEWORK_LOGGING_LEVEL,
         },
+    'root': {
+        'handlers': ['console'],
     },
 }

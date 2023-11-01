@@ -14,6 +14,7 @@
 ### Update 2023-10-09
 
 
+- Перенастроено логирование в проекте Django, чтобы сообщения долетали до консоли
 - В Django Tg Bot Framework исправлен баг обработки событий `PrivateChatMessageEdited` и `PrivateChatCallbackQuery` - #35
 
 ### Update 2023-10-07
