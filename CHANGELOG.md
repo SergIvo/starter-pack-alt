@@ -11,12 +11,14 @@
 Не в релизе
 ------------------------
 
-### Update 2023-10-09
-
+### Update 2023-11-01
 
 - Yostate: исправлен баг в методе `Locator.parse_obj`
 - Добавлено django приложение `trigger_funnel`
 - Перенастроено логирование в проекте Django, чтобы сообщения долетали до консоли
+
+### Update 2023-10-09
+
 - В Django Tg Bot Framework исправлен баг обработки событий `PrivateChatMessageEdited` и `PrivateChatCallbackQuery` - #35
 
 ### Update 2023-10-07
