@@ -44,6 +44,28 @@ services:
     depends_on:
       - postgres
 
+  trigger_funnel_mailing:
+    container_name: trigger_funnel_mailing
+    build:
+      context: ./
+      target: starter_pack_base
+    environment:
+      WEBAPP_ROOT_URL: http://127.0.0.1:8000
+      POSTGRES_DSN: postgres://postgres_user:postgres_password@postgres:5432/postgres_db
+      DJ__SECRET_KEY: empty
+      DJ__DEBUG: 'true'
+      TG_BOT_LOGGING_LEVEL: 'DEBUG'
+      DJANGO_TG_BOT_FRAMEWORK_LOGGING_LEVEL: 'DEBUG'
+      TG__BOT_TOKEN: ${TG__BOT_TOKEN?error}
+    volumes:
+      - ./media:/media/
+      - ./src:/opt/app/src/
+      - ./pyproject.toml:/opt/app/pyproject.toml
+      - ./poetry.lock:/opt/app/poetry.lock
+    depends_on:
+      - postgres
+    command: ./manage.py run_trigger_funnel_mailing
+
   linters:
     build:
       context: ./.linters/

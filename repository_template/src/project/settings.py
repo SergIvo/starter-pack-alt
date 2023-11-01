@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     # custom apps
     'auth.apps.AuthConfig',
     'tg_bot.apps.TgBotConfig',
+    'trigger_funnel.apps.AppConfig',
 
     'storages',
 ]
@@ -214,6 +215,10 @@ LOGGING = {
             'handlers': ['console'],
             'level': ENV.DJANGO_TG_BOT_FRAMEWORK_LOGGING_LEVEL,
         },
+        'trigger_funnel.mailing': {
+            'level': 'DEBUG',
+        },
+    },
     'root': {
         'handlers': ['console'],
     },
