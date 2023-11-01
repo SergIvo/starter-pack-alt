@@ -13,6 +13,7 @@
 
 ### Update 2023-11-01
 
+- django_tg_bot_framework/private_chats: исправлена ошибка вложенных транзакций
 - Yostate: исправлен баг в методе `Locator.parse_obj`
 - Добавлено django приложение `trigger_funnel`
 - Перенастроено логирование в проекте Django, чтобы сообщения долетали до консоли

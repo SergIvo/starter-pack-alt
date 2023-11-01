@@ -152,7 +152,7 @@ class PrivateChatStateMachine:
             session_queryset = self.session_model.objects.all()
 
             if atomic:
-                stack.enter_context(transaction.atomic(durable=True))
+                stack.enter_context(transaction.atomic())
                 session_queryset = self.session_model.objects.select_for_update()
 
             session_db_object, _ = session_queryset.get_or_create(tg_chat_id=tg_chat_id, defaults={
@@ -188,7 +188,7 @@ class PrivateChatStateMachine:
             session_queryset = self.session_model.objects.all()
 
             if atomic:
-                stack.enter_context(transaction.atomic(durable=True))
+                stack.enter_context(transaction.atomic())
                 session_queryset = self.session_model.objects.select_for_update()
 
             try:
