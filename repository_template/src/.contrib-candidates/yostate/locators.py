@@ -14,8 +14,15 @@ class Locator(BaseModel):
         validate_all = True  # default values should be validated too
         extra = 'forbid'
 
-    def __init__(self, state_class_locator, **kwargs):
-        super().__init__(state_class_locator=state_class_locator, **kwargs)
+    def __init__(self, *args, **kwargs):
+        """Like common pydantic.BaseModel init method with support of positional argument `state_class_locator`.
+
+        Full compatabilite with pydantic.BaseModel.__init__ method is provided.
+        """
+        if len(args) == 1:
+            super().__init__(state_class_locator=args[0], **kwargs)
+        else:
+            super().__init__(*args, **kwargs)
 
 
 class FrozenLocator(Locator):
