@@ -68,7 +68,7 @@ class Lead(models.Model):
     )
 
     state_machine_locator = models.JSONField(
-        'Cостояние',
+        'состояние',
         null=True,
         blank=True,
         help_text=(
