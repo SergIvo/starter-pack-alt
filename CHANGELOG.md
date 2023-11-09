@@ -13,6 +13,7 @@
 
 ### Update 2023-11-09
 
+- Исправлен баг "В private_chat берется не тот ник пользователя" #37
 - Добавлено новое отчуждаемое django-приложение [django_workers](repository_template/src/.contrib-candidates/django_workers/)
 - Добавлен новый модуль [funnels](repository_template/src/.contrib-candidates/django_tg_bot_framework/funnels/) в Django Tg Bot Framework
 
