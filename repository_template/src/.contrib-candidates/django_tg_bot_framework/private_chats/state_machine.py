@@ -69,7 +69,7 @@ class ActivePrivateChatSession:
             case PrivateChatMessageEdited():
                 self._update_last_update_tg_username_db_field_lazy(private_chat_update.from_.username)
             case PrivateChatCallbackQuery():
-                self._update_last_update_tg_username_db_field_lazy(private_chat_update.message.from_.username)
+                self._update_last_update_tg_username_db_field_lazy(private_chat_update.from_.username)
 
     @validate_arguments
     def switch_to(self, locator: Locator) -> None:
