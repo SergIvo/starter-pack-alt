@@ -11,6 +11,11 @@
 Не в релизе
 ------------------------
 
+### Update 2023-11-09
+
+- Добавлено новое отчуждаемое django-приложение [django_workers](repository_template/src/.contrib-candidates/django_workers/)
+- Добавлен новый модуль [funnels](repository_template/src/.contrib-candidates/django_tg_bot_framework/funnels/) в Django Tg Bot Framework
+
 ### Update 2023-11-01
 
 - django_tg_bot_framework/private_chats: исправлена ошибка вложенных транзакций
