@@ -10,3 +10,8 @@ from .private_chats import (  # noqa F401
     PrivateChatStateMachine,
     ActivePrivateChatSession,
 )
+from .funnels import (  # noqa F401
+    AbstractFunnelEvent,
+    AbstractFunnelLeadModel,
+    FunnelStateMachine,
+)

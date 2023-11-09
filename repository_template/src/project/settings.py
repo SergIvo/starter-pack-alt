@@ -52,11 +52,12 @@ INSTALLED_APPS = [
     # third party apps
     'debug_toolbar',
     'django_json_widget',
+    'django_workers',
 
     # custom apps
     'auth.apps.AuthConfig',
     'tg_bot.apps.TgBotConfig',
-    'trigger_funnel.apps.AppConfig',
+    'trigger_mailing.apps.AppConfig',
 
     'storages',
 ]
@@ -214,9 +215,6 @@ LOGGING = {
         'django_tg_bot_framework': {
             'handlers': ['console'],
             'level': ENV.DJANGO_TG_BOT_FRAMEWORK_LOGGING_LEVEL,
-        },
-        'trigger_funnel.mailing': {
-            'level': 'DEBUG',
         },
     },
     'root': {

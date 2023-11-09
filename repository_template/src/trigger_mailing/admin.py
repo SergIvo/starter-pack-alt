@@ -45,12 +45,17 @@ class LeadAdmin(admin.ModelAdmin):
     list_display = [
         'tg_user_id',
         'get_tg_username',
+        'funnel_slug',
         'get_funnel_stage',
-        'mailing_failure_reason',
+        'mailing_failure_reason_code',
     ]
     search_fields = [
         'tg_user_id',
+        'mailing_failure_reason_code',
+        'mailing_failure_description',
+        'mailing_failure_debug_details',
     ]
+
     readonly_fields = [
         'get_tg_username',
         'get_funnel_stage',
@@ -60,6 +65,7 @@ class LeadAdmin(admin.ModelAdmin):
 
     list_filter = [
         MailingStatusFilter,
+        'funnel_slug',
     ]
 
     fieldsets = [
@@ -69,6 +75,7 @@ class LeadAdmin(admin.ModelAdmin):
                 'fields': [
                     'get_tg_username',
                     'tg_user_id',
+                    'funnel_slug',
                 ],
             },
         ),
@@ -84,7 +91,9 @@ class LeadAdmin(admin.ModelAdmin):
             'Ошибки рассылки',
             {
                 'fields': [
-                    'mailing_failure_reason',
+                    'mailing_failed_at',
+                    'mailing_failure_reason_code',
+                    'mailing_failure_description',
                     'mailing_failure_debug_details',
                 ],
             },

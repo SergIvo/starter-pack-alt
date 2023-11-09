@@ -9,9 +9,14 @@ from django_tg_bot_framework import (
     PrivateChatMessageReceived,
     PrivateChatCallbackQuery,
 )
+from django_tg_bot_framework.funnels import AbstractFunnelEvent
 
-from trigger_funnel import events as trigger_funnel_events
-from trigger_funnel.states import state_machine as trigger_funnel_state_machine
+from trigger_mailing import funnels as trigger_funnels
+from trigger_mailing.state_machine import (
+    state_machine as trigger_funnel_state_machine,
+    FIRST_MAILING_FUNNEL_SLUG,
+    SECOND_MAILING_FUNNEL_SLUG,
+)
 
 from .models import Conversation
 from .decorators import redirect_menu_commands
@@ -23,7 +28,7 @@ state_machine = PrivateChatStateMachine(
     session_model=Conversation,
     context_funcs=[
         trigger_funnel_state_machine.process_collected,
-        lambda: trigger_funnel_events.AbstractTriggerFunnelEvent.set_default_tg_user_id(
+        lambda: AbstractFunnelEvent.set_default_tg_user_id(
             Conversation.current.tg_user_id,
         ),
         *PrivateChatStateMachine.DEFAULT_CONTEXT_FUNCS,
@@ -73,20 +78,39 @@ class MainMenuState(PrivateChatState):
                 inline_keyboard=[
                     [
                         InlineKeyboardButton(
-                            text='Welcome message',
+                            text='Go back to welcome message',
                             callback_data='welcome',
+                        ),
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            text='Trigger second mailing',
+                            callback_data='trigger_second_mailing',
                         ),
                     ],
                 ],
             ),
         ).send()
 
-        trigger_funnel_state_machine.push_event(trigger_funnel_events.LeadNavigatedToMainMenu())
+        trigger_funnel_state_machine.push_event(trigger_funnels.LeadNavigatedToMainMenu())
+
+        SendMessageRequest(
+            text='First mailing was triggered. Wait for a minute...',
+            chat_id=Conversation.current.tg_chat_id,
+        ).send()
 
     def process_callback_query(self, callback_query: PrivateChatCallbackQuery) -> Locator | None:
         match callback_query.data:
             case 'welcome':
                 return Locator('/welcome/')
+            case 'trigger_second_mailing':
+                trigger_funnel_state_machine.push_event(
+                    trigger_funnels.LeadLaunchedSecondMailing(),
+                )
+                SendMessageRequest(
+                    text='Second mailing was triggered. Wait for a minute...',
+                    chat_id=Conversation.current.tg_chat_id,
+                ).send()
 
     def process_message_received(self, message: PrivateChatMessageReceived) -> Locator | None:
         SendMessageRequest(
@@ -96,11 +120,12 @@ class MainMenuState(PrivateChatState):
         return Locator('/main-menu/')
 
 
-@router.register('/mailing/')
-class MailingState(PrivateChatState):
+@router.register('/first-trigger-mailing/')
+class FirstTriggerMailingState(PrivateChatState):
+
     def enter_state(self) -> Locator | None:
         mailing_text = dedent('''\
-            *It's a mailing message!*
+            *📨 1️⃣ It's a first mailing message!*
 
             Select an appropriate option:
         ''')
@@ -129,7 +154,9 @@ class MailingState(PrivateChatState):
             reply_markup=reply_markup,
         ).send()
 
-        trigger_funnel_state_machine.push_event(trigger_funnel_events.MailingWasSentToLead())
+        trigger_funnel_state_machine.push_event(trigger_funnels.MailingWasSentToLead(
+            funnel_slug=FIRST_MAILING_FUNNEL_SLUG,
+        ))
 
     def process_callback_query(self, callback_query: PrivateChatCallbackQuery) -> Locator | None:
         SendMessageRequest(
@@ -140,9 +167,31 @@ class MailingState(PrivateChatState):
         match callback_query.data:
             case 'buy_first' | 'buy_second':
                 trigger_funnel_state_machine.push_event(
-                    trigger_funnel_events.LeadAcceptedMailingCallToAction(
+                    trigger_funnels.MailingTargetActionAcceptedByLead(
                         action=callback_query.data,
+                        funnel_slug=FIRST_MAILING_FUNNEL_SLUG,
                     ),
                 )
             case 'stop_mailing':
-                trigger_funnel_state_machine.push_event(trigger_funnel_events.LeadUnsubscribed())
+                trigger_funnel_state_machine.push_event(trigger_funnels.LeadUnsubscribed(
+                    funnel_slug=FIRST_MAILING_FUNNEL_SLUG,
+                ))
+
+
+@router.register('/second-trigger-mailing/')
+class SecondTriggerMailingState(PrivateChatState):
+    def enter_state(self) -> Locator | None:
+        mailing_text = dedent('''\
+            *📨 2️⃣ It's a second mailing message!*
+
+            Enter /start to return to Main Menu.
+        ''')
+
+        SendMessageRequest(
+            text=mailing_text,
+            chat_id=Conversation.current.tg_chat_id,
+        ).send()
+
+        trigger_funnel_state_machine.push_event(trigger_funnels.MailingWasSentToLead(
+            funnel_slug=SECOND_MAILING_FUNNEL_SLUG,
+        ))
