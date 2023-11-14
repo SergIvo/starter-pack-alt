@@ -30,6 +30,12 @@
 
 ## Как устроен модуль «Funnels»
 
+Что такое воронка:
+
+[![](funnel.drawio.png)](funnel.drawio.png)
+
+[![](private_chats_with_funnels_and_mailings.drawio.png)](private_chats_with_funnels_and_mailings.drawio.png)
+
 
 [![](scheme.drawio.png)](scheme.drawio.png)
 
