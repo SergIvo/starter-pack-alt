@@ -44,8 +44,8 @@ services:
     depends_on:
       - postgres
 
-  first_trigger_mailing_worker:
-    container_name: first_trigger_mailing_worker
+  trigger_mailing_worker:
+    container_name: trigger_mailing_worker
     build:
       context: ./
       target: starter_pack_base
@@ -64,7 +64,7 @@ services:
       - ./poetry.lock:/opt/app/poetry.lock
     depends_on:
       - postgres
-    command: ./manage.py run_worker "trigger_mailing.funnels.mailing_task_queue" -v3
+    command: ./manage.py run_worker "trigger_mailing.funnels.mailing_queue" -v3
 
   linters:
     build:

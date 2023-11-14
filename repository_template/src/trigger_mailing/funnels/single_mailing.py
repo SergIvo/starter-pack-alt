@@ -101,7 +101,7 @@ class Unsubscribed(BaseState):
     action_selected: str = ''
 
 
-class TaskQueue(AbstractTaskQueue):
+class MailingQueue(AbstractTaskQueue):
     def get_pending_tasks_queryset(self) -> models.QuerySet:
         return (
             Lead.objects
@@ -136,4 +136,4 @@ class TaskQueue(AbstractTaskQueue):
 
 # Task queue will be used by run_worker management command
 # Import path changes should be reflated in management command arguments
-task_queue = TaskQueue()
+mailing_queue = MailingQueue()
