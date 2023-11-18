@@ -282,6 +282,33 @@ $ docker compose exec postgres pg_dump -U postgres_user postgres_db -f /test_dat
 $ sudo chown -R $(id -u):$(id -g) ./test_data
 ```
 
+<a name="run-python-linters"></a>
+### Как запустить линтеры Python
+
+Линтеры запускаются в отдельном docker-контейнере, а код подключается к нему с помощью volume. Например, чтобы проверить линтером код в каталоге `src` запустите команду:
+
+```shell
+$ docker compose run --rm linters flake8 /src/
+/src/env_settings.py:33:121: E501 line too long (197 > 120 characters)
+1
+```
+Цифра в конце `1` -- это количество найденных линтером ошибок форматирования кода.
+
+Того же результата можно добиться с помощью альтернативной короткой команды `make lint`.
+
+Тот же образ с линтером можно использовать, чтобы подсветить ошибки форматирования прямо внутри IDE. Вот пример настройки Sublime Text с предустановленными плагинами [SublimeLinter](http://www.sublimelinter.com/en/stable/) и [SublimeLinter-flake8](https://packagecontrol.io/packages/SublimeLinter-flake8):
+
+```jsonc
+// project settings file
+{
+    "settings": {
+        // specify folder where docker-compose.yaml file placed to be able to launch `docker compose`
+        "SublimeLinter.linters.flake8.working_dir": "/path/to/repo/",
+        "SublimeLinter.linters.flake8.executable": ["docker", "compose", "run", "--rm", "linters", "flake8"],
+    },
+}
+```
+
 <a name="run-tests"></a>
 ### Как запустить тесты
 
