@@ -27,10 +27,10 @@
 
 Веб-приложение Django:
 
-- кастомная модель пользователя
-- boto3 для работы с S3
-- сбор логов в Rollbar
-- другие полезные батарейки, см файл [settings.py](repository_template/src/project/settings.py)
+- Уже реализована кастомная модель пользователя
+- Для работы с хранилищем S3 подключена библиотека Boto3
+- Настроен сбор логов в Rollbar
+- Подключены другие полезные батарейки, см файл [settings.py](repository_template/src/project/settings.py)
 
 Чат-бот Telegram на базе Django Tg Bot Framework:
 
