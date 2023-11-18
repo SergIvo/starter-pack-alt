@@ -9,8 +9,6 @@
     1. [Команды для быстрого запуска с помощью make](#make-commands)
     1. [Как обновить local-окружение](#update-local-env)
     1. [Как установить python-пакет в образ с Django](#add-python-package-to-django-image)
-    1. [Как перезалить тестовые данные](#recreate-db)
-    1. [Как сдампить тестовую БД](#create-db-backup)
     1. [Как запустить линтеры Python](#run-python-linters)
     1. [Как запустить тесты](#run-tests)
     1. [Как писать автотесты](#write-tests)
@@ -242,44 +240,6 @@ $ docker compose build django
 ```shell
 $ docker compose exec django bash
 container:$ poetry remove asks
-```
-
-
-<a name="recreate-db"></a>
-### Как перезалить тестовые данные
-
-Если данные в БД не пережили очередного эксперимента, то можно всё снести и развернуть проект с нуля. Делается это быстро — всего в несколько команд.
-
-Удаляем все docker volumes с данными: PostgreSQL.
-
-```shell
-$ docker compose down -v
-[+] Running 4/4
- ✔ Container django-1        Removed                                            0.0s
- ✔ Container postgres-1      Removed                                            0.3s
- ✔ Volume bot_postgres_data  Removed                                            0.0s
- ✔ Network bot_default       Removed                                            0.4s
-```
-
-Разворачиваем проект заново по инструкциям [Как развернуть local-окружение](#local-setup).
-
-<a name="create-db-backup"></a>
-### Как сдампить тестовую БД
-
-Бекап разработческой базы данных PostgreSQL лежит в каталоге `./test_data`. Вы можете либо заменить старый бэкап новым, либо добавить ещё один в дополнение к файлу `postgresql-test-data.csql`.
-
-Чтобы сохранить текущее состояние базы данных запустите `pg_dump`:
-
-```shell
-$ docker compose exec postgres pg_dump -U postgres_user postgres_db -f /test_data/postgres-alternative-backup.sql
-```
-
-В каталоге появится новый файл `./test_data/postgres-alternative-backup.sql`. Как воспользоваться им указано в инструкции [Как развернуть local-окружение](#local-setup).
-
-Владельцем нового файла `*.sql`, вероятно, окажется `root`. Это неприятная особенность Docker. Чтобы не спотыкаться об это в работе с файлом, лучше сразу поменяйте владельца файла на обычного текущего:
-
-```shell
-$ sudo chown -R $(id -u):$(id -g) ./test_data
 ```
 
 <a name="run-python-linters"></a>
