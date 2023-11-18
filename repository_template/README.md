@@ -41,15 +41,7 @@
 Для локального развертывания приложения необходимо в корне проекта создать файл `.env` со следующими переменными:
 
 ```shell
-DJ__SECRET_KEY=your_secret_key
-DJ__DEBUG=true
-DJ__ALLOWED_HOSTS='127.0.0.1, localhost, .ngrok-free.app'
-DJ__CSRF_TRUSTED_ORIGINS=https://*.ngrok-free.app
-WEBAPP_ROOT_URL=http://127.0.0.1:8000
-TG__WEBHOOK_TOKEN=your_webhook_token
 TG__BOT_TOKEN=your_tg_bot_token
-PUBLIC_URL=your_ngrok_web_url
-S3_DSN=s3_dsn_format
 ```
 
 ## Работа с кодом с использованием docker
