@@ -276,8 +276,8 @@ container:$ poetry remove asks
 ```shell
 $ docker compose down -v
 [+] Running 4/4
- ✔ Container django-1    Removed                                            0.0s
- ✔ Container postgres-1  Removed                                            0.3s
+ ✔ Container django-1        Removed                                            0.0s
+ ✔ Container postgres-1      Removed                                            0.3s
  ✔ Volume bot_postgres_data  Removed                                            0.0s
  ✔ Network bot_default       Removed                                            0.4s
 ```
