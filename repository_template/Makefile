@@ -16,7 +16,7 @@ lint:
 lint_file:
 	cat $1 | docker compose run -T --rm linters flake8 -
 
-pytest:
+test:
 	docker compose run --rm django pytest ./ .contrib-candidates/
 
 makemigrations:

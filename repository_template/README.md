@@ -201,7 +201,7 @@ $ make lint_file
 
 ```shell
 $ # Запуск тестов
-$ make pytest
+$ make test
 ```
 
 ```shell
