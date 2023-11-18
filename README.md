@@ -60,3 +60,7 @@
 - Заменить в деплойных скриптах необходимые параметры для развертывания:
     - [.gitlab-ci.yml](repository_template/.gitlab-ci.yml)
     - [.deploy/](repository_template/.deploy)
+
+## Разработчикам Starter Pack
+
+Инструкции и справочная информация для разработчиков Starter Pack собраны в отдельном документе [CONTRIBUTING.md](CONTRIBUTING.md).
