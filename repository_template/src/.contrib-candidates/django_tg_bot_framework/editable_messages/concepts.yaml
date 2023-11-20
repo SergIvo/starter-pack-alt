@@ -129,6 +129,7 @@
 
 Message Router: !concept
   # TODO Описать концепт, example, extension и exclusion
+  # TODO Позаимствовать примеры из роутера yostate -- там описаны концепты
 
 Context Processor: !concept
   # TODO Описать концепт, example, extension и exclusion
