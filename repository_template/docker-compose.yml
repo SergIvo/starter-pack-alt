@@ -21,8 +21,8 @@ services:
       POSTGRES_DSN: postgres://postgres_user:postgres_password@postgres:5432/postgres_db
       DJ__SECRET_KEY: empty
       DJ__DEBUG: 'true'
-      DJ__ALLOWED_HOSTS: '127.0.0.1, localhost, .ngrok-free.app'
-      DJ__CSRF_TRUSTED_ORIGINS: 'https://*.ngrok-free.app'
+      DJ__ALLOWED_HOSTS: '127.0.0.1, localhost, sergivo.site'
+      DJ__CSRF_TRUSTED_ORIGINS: 'https://sergivo.site'
       ENABLE_DEBUG_TOOLBAR: 'true'
       ENABLE_MEDIA_FILES_SERVING: 'true'
       TG_BOT_LOGGING_LEVEL: 'DEBUG'
