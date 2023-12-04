@@ -1,6 +1,12 @@
 from textwrap import dedent
 
-from tg_api import SendMessageRequest, InlineKeyboardMarkup, InlineKeyboardButton
+from tg_api import (
+    SendMessageRequest,
+    EditMessageReplyMarkupRequest,
+    EditMessageTextRequest,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+)
 from yostate import Router, Locator
 
 from django_tg_bot_framework import (
@@ -19,9 +25,9 @@ from trigger_mailing.state_machine import (
 )
 
 from .models import Conversation
-from .decorators import redirect_menu_commands
+from .decorators import redirect_menu_commands, announce_locator
 
-router = Router(decorators=[redirect_menu_commands])
+router = Router(decorators=[redirect_menu_commands, announce_locator])
 
 state_machine = PrivateChatStateMachine(
     router=router,
@@ -88,6 +94,18 @@ class MainMenuState(PrivateChatState):
                             callback_data='trigger_second_mailing',
                         ),
                     ],
+                    [
+                        InlineKeyboardButton(
+                            text='Go to extra buttons',
+                            callback_data='extra_buttons',
+                        ),
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            text='Language list',
+                            callback_data='language_list',
+                        ),
+                    ],
                 ],
             ),
         ).send()
@@ -111,6 +129,10 @@ class MainMenuState(PrivateChatState):
                     text='Second mailing was triggered. Wait for a minute...',
                     chat_id=Conversation.current.tg_chat_id,
                 ).send()
+            case 'extra_buttons':
+                return Locator('/extra-buttons/')
+            case 'language_list':
+                return Locator('/language-list/')
 
     def process_message_received(self, message: PrivateChatMessageReceived) -> Locator | None:
         SendMessageRequest(
@@ -118,6 +140,178 @@ class MainMenuState(PrivateChatState):
             chat_id=Conversation.current.tg_chat_id,
         ).send()
         return Locator('/main-menu/')
+
+
+@router.register('/extra-buttons/')
+class MainMenuState(PrivateChatState):
+    def enter_state(self) -> Locator | None:
+        SendMessageRequest(
+            text='There are more buttons',
+            chat_id=Conversation.current.tg_chat_id,
+            reply_markup=InlineKeyboardMarkup(
+                inline_keyboard=[
+                    [
+                        InlineKeyboardButton(
+                            text='Back to main menu',
+                            callback_data='main_menu',
+                        ),
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            text='Show more buttons',
+                            callback_data='show_buttons',
+                        ),
+                    ],
+                ],
+            ),
+        ).send()
+
+    def process_callback_query(self, callback_query: PrivateChatCallbackQuery) -> Locator | None:
+        message_id = callback_query.message.message_id
+        match callback_query.data:
+            case 'main_menu':
+                return Locator('/main-menu/')
+            case 'show_buttons':
+                EditMessageReplyMarkupRequest(
+                    message_id=message_id,
+                    chat_id=Conversation.current.tg_chat_id,
+                    reply_markup=InlineKeyboardMarkup(
+                        inline_keyboard=[
+                            [
+                                InlineKeyboardButton(
+                                    text='Back to main menu',
+                                    callback_data='main_menu',
+                                ),
+                            ],
+                            [
+                                InlineKeyboardButton(
+                                    text='Hide buttons',
+                                    callback_data='hide_buttons',
+                                ),
+                            ],
+                            [
+                                InlineKeyboardButton(
+                                    text='Do nothing',
+                                    callback_data='nothing',
+                                ),
+                                InlineKeyboardButton(
+                                    text='Language list',
+                                    callback_data='language_list',
+                                ),
+                            ],
+                        ],
+                    ),
+                ).send()
+            case 'hide_buttons':
+                EditMessageReplyMarkupRequest(
+                    message_id=message_id,
+                    chat_id=Conversation.current.tg_chat_id,
+                    reply_markup=InlineKeyboardMarkup(
+                        inline_keyboard=[
+                            [
+                                InlineKeyboardButton(
+                                    text='Back to main menu',
+                                    callback_data='main_menu',
+                                ),
+                            ],
+                            [
+                                InlineKeyboardButton(
+                                    text='Show more buttons',
+                                    callback_data='show_buttons',
+                                ),
+                            ],
+                        ],
+                    ),
+                ).send()
+            case 'nothing':
+                SendMessageRequest(
+                    text='This button does nothing',
+                    chat_id=Conversation.current.tg_chat_id,
+                ).send()
+            case 'language_list':
+                return Locator('/language-list/')
+
+
+LANGUAGES = ['Python', 'Ruby', 'TypeScript', 'Golang', 'Lua', 'Rust', 'C#', 'Java']
+
+
+@router.register('/language-list/')
+class MainMenuState(PrivateChatState):
+    def enter_state(self) -> Locator | None:
+        SendMessageRequest(
+            text=f'Selected language: {LANGUAGES[0]}',
+            chat_id=Conversation.current.tg_chat_id,
+            reply_markup=InlineKeyboardMarkup(
+                inline_keyboard=[
+                    [
+                        InlineKeyboardButton(
+                            text='->',
+                            callback_data='next',
+                        ),
+                    ],
+                    [
+                        InlineKeyboardButton(
+                            text='Back to main menu',
+                            callback_data='main_menu',
+                        ),
+                    ],
+                ],
+            ),
+        ).send()
+
+    def process_callback_query(self, callback_query: PrivateChatCallbackQuery) -> Locator | None:
+        message_id = callback_query.message.message_id
+        current_language = callback_query.message.text.lstrip('Selected language: ')
+        current_lang_index = LANGUAGES.index(current_language)
+
+        navigation_keys = [
+                 InlineKeyboardButton(
+                     text='<-',
+                     callback_data='previous',
+            ),
+                 InlineKeyboardButton(
+                     text='->',
+                     callback_data='next',
+            ),
+        ]
+        
+        new_keyboard=[
+            navigation_keys,
+            [
+                InlineKeyboardButton(
+                    text='Back to main menu',
+                    callback_data='main_menu',
+                )
+            ],
+        ]
+
+        match callback_query.data:
+            case 'main_menu':
+                return Locator('/main-menu/')
+            case 'previous':
+                previous_index = current_lang_index - 1 
+                if previous_index == 0:
+                    navigation_keys.pop(0)
+                EditMessageTextRequest(
+                    message_id=message_id,
+                    text=f'Selected language: {LANGUAGES[previous_index]}',
+                    chat_id=Conversation.current.tg_chat_id,
+                    reply_markup=InlineKeyboardMarkup(
+                        inline_keyboard=new_keyboard
+                    )
+                ).send()
+            case 'next':
+                next_index = current_lang_index + 1
+                if next_index == len(LANGUAGES) - 1:
+                    navigation_keys.pop(1)
+                EditMessageTextRequest(
+                    message_id=message_id,
+                    text=f'Selected language: {LANGUAGES[next_index]}',
+                    chat_id=Conversation.current.tg_chat_id,
+                    reply_markup=InlineKeyboardMarkup(
+                        inline_keyboard=new_keyboard
+                    )
+                ).send()
 
 
 @router.register('/first-trigger-mailing/')
